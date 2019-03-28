@@ -23,6 +23,8 @@ public class GetIP {
 
 	private final String ROUTER_REQ_PARAM = "group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=bGJ0NDI1OjU5MTMyMTU=";
 
+	private String IP_FIELD = "wan0_ipaddr";
+
 	public String ip() {
 		this.mainService();
 		return ipAddr;
@@ -39,7 +41,9 @@ public class GetIP {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Document doc = 
+		Document doc = Jsoup.parse(resultStatus.getResponse());
+		Elements eles = doc.getElementsContainingOwnText(IP_FIELD);
+		ipAddr = eles.text().split("=")[1];
 	}
 
 	private Map<String, String> getHeader() {
