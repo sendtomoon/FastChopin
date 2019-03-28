@@ -8,8 +8,9 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
@@ -26,6 +27,8 @@ public class GetIP {
 	private final String ROUTER_REQ_PARAM = "group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=bGJ0NDI1OjU5MTMyMTU=";
 
 	private String IP_FIELD = "wan0_ipaddr";
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public String ip() {
 		this.mainService();
@@ -46,6 +49,7 @@ public class GetIP {
 		Document doc = Jsoup.parse(resultStatus.getResponse());
 		Elements eles = doc.getElementsContainingOwnText(IP_FIELD);
 		ipAddr = eles.text().split("=")[1];
+		logger.info("IP Address is:" + ipAddr);
 	}
 
 	private Map<String, String> getHeader() {

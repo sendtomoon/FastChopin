@@ -7,9 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.sendtomoon.chopin.ip.GetIP;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.util.StatusPrinter;
-
 @Component
 public class MainService {
 
@@ -22,8 +19,6 @@ public class MainService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public void mainService() {
-		LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-        StatusPrinter.print(lc);
 		logger.info("Starting----------------");
 		renew.renew(getip.ip());
 		logger.info("End---------------------");
