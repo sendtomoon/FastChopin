@@ -8,10 +8,13 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
 
+@Component
 public class GetIP {
 
 	private String ipAddr;

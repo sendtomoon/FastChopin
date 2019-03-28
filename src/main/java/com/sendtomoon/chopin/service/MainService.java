@@ -1,22 +1,21 @@
 package com.sendtomoon.chopin.service;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.sendtomoon.chopin.ip.GetIP;
 
+@Component
 public class MainService {
 
-	private static ApplicationContext ac = null;
+	@Autowired
+	private GetIP getip;
 
-	static {
-		ac = new ClassPathXmlApplicationContext("root-config.xml");
-	}
+	@Autowired
+	private ReNewDNS renew;
 
 	public void mainService() {
-		GetIP ip = new GetIP();
-		ReNewDNS renew = new ReNewDNS();
-		renew.renew(ip.ip());
+		renew.renew(getip.ip());
 	}
 
 }

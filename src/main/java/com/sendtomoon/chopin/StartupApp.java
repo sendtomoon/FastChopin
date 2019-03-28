@@ -1,12 +1,26 @@
 package com.sendtomoon.chopin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.sendtomoon.chopin.service.MainService;
 
 public class StartupApp {
+
+	private static ApplicationContext ac = null;
+
+	static {
+		ac = new ClassPathXmlApplicationContext("root-config.xml");
+	}
+
+	final static Logger logger = LoggerFactory.getLogger(StartupApp.class);
+
 	public static void main(String[] args) {
-		System.err.println("Starting----------------");
-		MainService main = new MainService();
+		logger.info("Starting----------------");
+		MainService main = ac.getBean(MainService.class);
 		main.mainService();
-		System.err.println("End---------------------");
+		logger.info("End---------------------");
 	}
 }

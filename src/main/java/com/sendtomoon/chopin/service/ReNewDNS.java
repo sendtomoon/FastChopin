@@ -3,9 +3,13 @@ package com.sendtomoon.chopin.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
 
+@Component
 public class ReNewDNS {
 
 	public void renew(final String ip) {
