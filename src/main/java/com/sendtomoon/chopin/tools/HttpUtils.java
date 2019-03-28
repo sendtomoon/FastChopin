@@ -25,6 +25,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import com.alibaba.fastjson.JSON;
+import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 
 public class HttpUtils {
 
@@ -54,9 +55,8 @@ public class HttpUtils {
 		}
 	}
 
-	public static Map<String, Object> post(String url, String request, String proxyUrl, Map<String, String> header,
+	public static HttpResponseDTO post(String url, String request, String proxyUrl, Map<String, String> header,
 			CookieStore cookie) throws Exception {
-		Map<String, Object> respMap = new HashMap<String, Object>();
 		CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookie).build();
 		try {
 			HttpPost httpPost = new HttpPost(url);
@@ -72,7 +72,6 @@ public class HttpUtils {
 			if (StringUtils.isNotBlank(proxyUrl)) {
 				HttpUtils.setProxy(httpPost, proxyUrl);
 			}
-			System.out.println("Executing post request " + httpPost.getRequestLine());
 			CloseableHttpResponse response = httpclient.execute(httpPost);
 			try {
 				HttpEntity respEntity = response.getEntity();
@@ -85,10 +84,10 @@ public class HttpUtils {
 						while ((line = reader.readLine()) != null) {
 							strber.append(line);
 						}
-						respMap.put("response", strber.toString());
-						respMap.put("cookie", cookie);
-						System.err.println(JSON.toJSONString(cookie));
-						return respMap;
+						HttpResponseDTO dto = new HttpResponseDTO();
+						dto.setCookie(cookie);
+						dto.setResponse(strber.toString());
+						return dto;
 					} catch (IOException ex) {
 						throw ex;
 					} finally {

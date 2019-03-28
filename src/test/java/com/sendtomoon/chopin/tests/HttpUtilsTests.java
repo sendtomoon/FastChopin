@@ -7,6 +7,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.junit.Test;
 
+import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
 
 public class HttpUtilsTests {
@@ -20,15 +21,15 @@ public class HttpUtilsTests {
 	public void postTest() {
 		CookieStore cookie = new BasicCookieStore();
 
-		Map<String, Object> map = null;
+		HttpResponseDTO result = null;
 		try {
-			map = HttpUtils.post("http://192.168.0.1/login.cgi",
+			result = HttpUtils.post("http://192.168.0.1/login.cgi",
 					"group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=bGJ0NDI1OjU5MTMyMTU=",
 					null, getH1(), cookie);
-			System.err.println(map.get("response"));
-			map = HttpUtils.post("http://192.168.0.1/ajax_status.xml?hash=0.24395379430691233", "", null, getH1(),
+			System.err.println(result.getResponse());
+			result = HttpUtils.post("http://192.168.0.1/ajax_status.xml?hash=0.24395379430691233", "", null, getH1(),
 					cookie);
-			System.err.println(map.get("response"));
+			System.err.println(result.getResponse());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
