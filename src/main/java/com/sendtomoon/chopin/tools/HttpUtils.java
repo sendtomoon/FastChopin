@@ -42,7 +42,6 @@ public class HttpUtils {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
 			HttpGet httpGet = new HttpGet(url);
-			System.out.println("Executing get request " + httpGet.getRequestLine());
 			CloseableHttpResponse response = httpclient.execute(httpGet);
 			try {
 				HttpEntity entity = response.getEntity();
