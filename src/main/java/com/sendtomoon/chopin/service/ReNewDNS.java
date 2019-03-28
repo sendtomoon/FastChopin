@@ -10,10 +10,9 @@ public class ReNewDNS {
 
 	public void renew(final String ip) {
 		String requestBody = "[{\"data\":\"" + ip + "\"}]";
+		String renew_addr = "https://api.godaddy.com/v1/domains/sendtomoon.com/records/A/mozart";
 		try {
-			HttpResponseDTO dto = HttpUtils.put("https://api.godaddy.com/v1/domains/sendtomoon.com/records/A/mozart",
-					requestBody, this.getHeader());
-			System.err.println(dto.getResponse());
+			HttpResponseDTO dto = HttpUtils.put(renew_addr, requestBody, this.getHeader());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

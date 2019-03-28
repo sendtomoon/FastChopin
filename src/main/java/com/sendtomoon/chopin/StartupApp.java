@@ -7,5 +7,6 @@ public class StartupApp {
 		System.err.println("Starting----------------");
 		MainService main = new MainService();
 		main.mainService();
+		System.err.println("End---------------------");
 	}
 }
