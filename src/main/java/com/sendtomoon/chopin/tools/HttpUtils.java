@@ -9,9 +9,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -19,12 +17,9 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.RequestConfig;
@@ -32,7 +27,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -40,7 +34,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 
-import com.alibaba.fastjson.JSON;
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 
 public class HttpUtils {
@@ -121,15 +114,15 @@ public class HttpUtils {
 		return null;
 	}
 
-	public static Map<String, String> httpsClientPut(String url, String requestBody, Map<String, String> header)
+	public static HttpResponseDTO put(String url, String requestBody, Map<String, String> header)
 			throws ClientProtocolException, IOException, NoSuchAlgorithmException, KeyManagementException,
 			URISyntaxException {
-		Map<String, String> respMap = new HashMap<String, String>();
+		HttpResponseDTO respDTO = new HttpResponseDTO();
 		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 		httpClientBuilder.setSSLContext(createIgnoreVerifySSL());
 		CloseableHttpClient closeableHttpClient = httpClientBuilder.build();
 		HttpPut put = new HttpPut(url);
-		for (Entry<String, String> entry : header.entrySet()) {
+		for (Map.Entry<String, String> entry : header.entrySet()) {
 			put.setHeader(entry.getKey(), entry.getValue().toString());
 		}
 		StringEntity se = new StringEntity(requestBody, "UTF-8");
@@ -146,17 +139,15 @@ public class HttpUtils {
 			strber.append(line);
 		}
 		inStream.close();
-		respMap.put("status", String.valueOf(httpResponse.getStatusLine().getStatusCode()));
-		respMap.put("responseMsg", strber.toString());
-		return respMap;
+		respDTO.setHttpStatus(String.valueOf(httpResponse.getStatusLine().getStatusCode()));
+		respDTO.setResponse(strber.toString());
+		return respDTO;
 	}
 
 	private static SSLContext createIgnoreVerifySSL() throws NoSuchAlgorithmException, KeyManagementException {
 		SSLContext sc = SSLContext.getInstance("SSLv3");
-
 		// 实现一个X509TrustManager接口，用于绕过验证，不用修改里面的方法
 		X509TrustManager trustManager = new X509TrustManager() {
-
 			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 			}
 
@@ -166,9 +157,7 @@ public class HttpUtils {
 			public X509Certificate[] getAcceptedIssuers() {
 				return null;
 			}
-
 		};
-
 		sc.init(null, new TrustManager[] { trustManager }, null);
 		return sc;
 	}

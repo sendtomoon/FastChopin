@@ -6,8 +6,8 @@ public class MainService {
 
 	public void mainService() {
 		GetIP ip = new GetIP();
-		ip.ip();
-		
+		ReNewDNS renew = new ReNewDNS();
+		renew.renew(ip.ip());
 	}
 
 }

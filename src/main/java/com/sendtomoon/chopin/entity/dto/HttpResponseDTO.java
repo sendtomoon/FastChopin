@@ -8,6 +8,8 @@ public class HttpResponseDTO {
 
 	private CookieStore cookie;
 
+	private String httpStatus;
+
 	public String getResponse() {
 		return response;
 	}
@@ -22,6 +24,14 @@ public class HttpResponseDTO {
 
 	public void setCookie(CookieStore cookie) {
 		this.cookie = cookie;
+	}
+
+	public String getHttpStatus() {
+		return httpStatus;
+	}
+
+	public void setHttpStatus(String httpStatus) {
+		this.httpStatus = httpStatus;
 	}
 
 }
