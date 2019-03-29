@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<logger name="org.springframework" level="info" />
+	<logger name="org.mybatis" level="info" />
+	<logger name="ch.qos.logback" level="off" />
+	<contextName>FastChopin</contextName>
+	<property name="LOG_PATH" value="D:/develop/log" />
+	<property name="APPDIR" value="FastChopin" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}]-%-5level %logger Line:%-3L - %msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>info</level>
+		</filter>
+	</appender>
+
+	<appender name="FILEINFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/${APPDIR}/log_info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/${APPDIR}/info/log-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>2MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<append>true</append>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}]-%-5level %logger Line:%-3L - %msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+		<!-- 此日志文件只记录info级别的 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>info</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+ 
+
+	<!-- 生产环境下，将此级别配置为适合的级别，以免日志文件太多或影响程序性能 -->
+	<root level="info">
+		<!-- 生产环境将请stdout,testfile去掉 -->
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILEINFO" />
+	</root>
+
+</configuration>
