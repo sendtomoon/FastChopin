@@ -3,6 +3,7 @@ package com.sendtomoon.chopin.ip;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.jsoup.Jsoup;
@@ -40,7 +41,9 @@ public class GetIP {
 		HttpResponseDTO resultLogin = null;
 		HttpResponseDTO resultStatus = null;
 		try {
-			resultLogin = HttpUtils.post(ROUTER_LOGIN_URL, ROUTER_REQ_PARAM, null, this.getHeader(), cookie);
+			resultLogin = HttpUtils.post(ROUTER_LOGIN_URL,
+					ROUTER_REQ_PARAM + Base64.encodeBase64String("lbt425:5913215".getBytes()), null, this.getHeader(),
+					cookie);
 			cookie = resultLogin.getCookie();
 			resultStatus = HttpUtils.post(ROUTER_STATUS_URL, null, null, this.getHeader(), cookie);
 		} catch (Exception e) {

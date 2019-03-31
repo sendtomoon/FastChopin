@@ -11,5 +11,5 @@ public class StartupApp {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("root-config.xml");
 		MainService main = ac.getBean(MainService.class);
 		main.mainService();
-	}
+ 	}
 }
