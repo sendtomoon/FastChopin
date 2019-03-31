@@ -24,7 +24,7 @@ public class GetIP {
 
 	private final String ROUTER_STATUS_URL = "http://192.168.0.1/ajax_status.xml?hash=0.24395379430691233";
 
-	private final String ROUTER_REQ_PARAM = "group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=bGJ0NDI1OjU5MTMyMTU=";
+	private final String ROUTER_REQ_PARAM = "group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=";
 
 	private String IP_FIELD = "wan0_ipaddr";
 
