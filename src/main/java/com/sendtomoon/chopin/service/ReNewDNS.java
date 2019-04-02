@@ -3,8 +3,8 @@ package com.sendtomoon.chopin.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
@@ -14,7 +14,7 @@ import com.sendtomoon.chopin.tools.HttpUtils;
 @Component
 public class ReNewDNS {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LogManager.getLogger(this.getClass());
 
 	public void renew(final String ip) {
 		String requestBody = "[{\"data\":\"" + ip + "\"}]";
