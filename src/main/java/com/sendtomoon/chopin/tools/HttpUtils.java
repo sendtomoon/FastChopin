@@ -68,15 +68,16 @@ public class HttpUtils {
 		CloseableHttpClient httpclient = HttpClients.custom().setDefaultCookieStore(cookie).build();
 		try {
 			HttpPost httpPost = new HttpPost(url);
-			if (StringUtils.isNotBlank(request)) {
-				HttpEntity entity = new StringEntity(request);
-				httpPost.setEntity(entity);
-			}
 			// 设置头信息
 			if (MapUtils.isNotEmpty(header)) {
 				for (Map.Entry<String, String> entry : header.entrySet()) {
 					httpPost.addHeader(entry.getKey(), entry.getValue());
 				}
+			}
+			// 设置请求参数
+			if (StringUtils.isNotBlank(request)) {
+				HttpEntity entity = new StringEntity(request);
+				httpPost.setEntity(entity);
 			}
 
 			if (StringUtils.isNotBlank(proxyUrl)) {
