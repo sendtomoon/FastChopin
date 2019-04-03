@@ -1,0 +1,8 @@
+[2019-03-29 13:13:03.682]-INFO  com.sendtomoon.chopin.service.MainService Line:22  - Starting----------------
+[2019-03-29 13:13:05.164]-INFO  com.sendtomoon.chopin.ip.GetIP Line:52  - IP Address is:119.123.215.22
+[2019-03-29 13:13:06.339]-INFO  com.sendtomoon.chopin.service.ReNewDNS Line:24  - Renew info is:{"httpStatus":"200","response":""}
+[2019-03-29 13:13:06.339]-INFO  com.sendtomoon.chopin.service.MainService Line:24  - End---------------------
+[2019-03-29 13:13:53.945]-INFO  com.sendtomoon.chopin.service.MainService Line:22  - Starting----------------
+[2019-03-29 13:13:55.434]-INFO  com.sendtomoon.chopin.ip.GetIP Line:52  - IP Address is:119.123.215.22
+[2019-03-29 13:13:56.515]-INFO  com.sendtomoon.chopin.service.ReNewDNS Line:24  - Renew info is:{"httpStatus":"200","response":""}
+[2019-03-29 13:13:56.516]-INFO  com.sendtomoon.chopin.service.MainService Line:24  - End---------------------
