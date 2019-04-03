@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration status="info">
 	<Appenders>
 		<console name="Console" target="SYSTEM_OUT">
 			<PatternLayout
 				pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}]-%-5level %logger Line:%-3L - %msg%n" />
 		</console>
+		<RollingFile name="chopinInfoLog" fileName="${sys:chopin.log.dir}/info.log"
+                 filePattern="${sys:chopin.log.dir}/logs/$${date:yyyy-MM}/info-%d{MM-dd-yyyy}-%i.log.gz" >
+			<PatternLayout>
+        		<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}]-%-5level %logger Line:%-3L - %msg%n</Pattern>
+      		</PatternLayout>
+      		<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+      		<Policies>
+  				<TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+			</Policies>
+		</RollingFile>
 	</Appenders>
 	<Loggers>
 		<Logger name="org.springframework" level="INFO" />
-		<Root level="info">
+		<Logger name="com.sendtomoon.chopin" level="INFO" />
+		<Root level="all">
 			<AppenderRef ref="Console" />
+			<AppenderRef ref="chopinInfoLog" />
 		</Root>
 	</Loggers>
 
