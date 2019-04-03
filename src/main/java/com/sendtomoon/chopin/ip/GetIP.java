@@ -11,9 +11,12 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONObject;
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
+import com.sendtomoon.chopin.entity.dto.RouterLoginDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
 
 @Component
@@ -21,11 +24,14 @@ public class GetIP {
 
 	private String ipAddr;
 
-	private final String ROUTER_LOGIN_URL = "http://192.168.0.1/login.cgi";
+	@Value("${router.login.url}")
+	private String ROUTER_LOGIN_URL;
 
-	private final String ROUTER_STATUS_URL = "http://192.168.0.1/ajax_status.xml?hash=0.24395379430691233";
+	@Value("${router.status.url}")
+	private String ROUTER_STATUS_URL;
 
-	private final String ROUTER_REQ_PARAM = "group_id=&action_mode=&action_script=&action_wait=5&current_page=Main_Login.asp&next_page=index.asp&login_authorization=";
+	@Value("${router.password}")
+	private String password;
 
 	private String IP_FIELD = "wan0_ipaddr";
 
@@ -40,14 +46,19 @@ public class GetIP {
 		CookieStore cookie = new BasicCookieStore();
 		HttpResponseDTO resultLogin = null;
 		HttpResponseDTO resultStatus = null;
+		RouterLoginDTO loginDTO = new RouterLoginDTO();
+		loginDTO.setAction_wait("5");
+		loginDTO.setCurrent_page("Main_Login.asp");
+		loginDTO.setNext_page("index.asp");
+		loginDTO.setLogin_authorization(Base64.encodeBase64String(password.getBytes()));
 		try {
-			resultLogin = HttpUtils.post(ROUTER_LOGIN_URL,
-					ROUTER_REQ_PARAM + Base64.encodeBase64String("lbt425:5913215".getBytes()), null, this.getHeader(),
+			resultLogin = HttpUtils.post(ROUTER_LOGIN_URL, JSONObject.toJSONString(loginDTO), null, this.getHeader(),
 					cookie);
 			cookie = resultLogin.getCookie();
 			resultStatus = HttpUtils.post(ROUTER_STATUS_URL, null, null, this.getHeader(), cookie);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("mainService-error:" + e, e);
+			return;
 		}
 		Document doc = Jsoup.parse(resultStatus.getResponse());
 		Elements eles = doc.getElementsContainingOwnText(IP_FIELD);

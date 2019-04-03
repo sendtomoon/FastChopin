@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sendtomoon.chopin</groupId>
 	<artifactId>FastChopin</artifactId>
-	<version>2.0</version>
+	<version>3.0</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -90,7 +90,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<!-- 用这个maven打包插件 -->
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
