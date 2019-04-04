@@ -29,9 +29,8 @@ public class ReNewDNS {
 			HttpResponseDTO dto = HttpUtils.put(renew_addr, requestBody, this.getHeader());
 			logger.info("Renew info is:" + JSON.toJSONString(dto));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("renew-error" + e, e);
 		}
-
 	}
 
 	private Map<String, String> getHeader() {
