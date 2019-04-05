@@ -11,4 +11,10 @@
 		base-package="com.sendtomoon.chopin"></context:component-scan>
 	<context:property-placeholder
 		location="classpath:private.properties" />
+
+	<bean id="_mongodbTemplate"
+		class="com.sendtomoon.chopin.beans.MongoDBFactoryBean" >
+	</bean>
+	
+	
 </beans>
