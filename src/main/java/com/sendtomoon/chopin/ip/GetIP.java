@@ -11,9 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.sendtomoon.chopin.data.mongodb.MongoDAO;
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
 
@@ -33,6 +35,9 @@ public class GetIP {
 
 	@Value("${router.login.param}")
 	private String param;
+
+	@Autowired
+	private MongoDAO dao;
 
 	private String IP_FIELD = "wan0_ipaddr";
 
@@ -55,11 +60,13 @@ public class GetIP {
 			Document doc = Jsoup.parse(resultStatus.getResponse());
 			Elements eles = doc.getElementsContainingOwnText(IP_FIELD);
 			ipAddr = eles.text().split("=")[1];
+			dao.add(resultStatus);
 		} catch (Exception e) {
 			logger.error("mainService-error:" + e, e);
 			return;
 		}
 		logger.info("IP Address is:" + ipAddr);
+
 	}
 
 	private Map<String, String> getHeader() {

@@ -29,6 +29,7 @@
 	<Loggers>
 		<Logger name="org.springframework" level="INFO" />
 		<Logger name="com.sendtomoon.chopin" level="INFO" />
+		<Logger name="com.mongodb" level="INFO" />
 		<Root level="all">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="chopinInfoLog" />

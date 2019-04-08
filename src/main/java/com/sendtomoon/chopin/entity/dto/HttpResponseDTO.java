@@ -1,8 +1,11 @@
 package com.sendtomoon.chopin.entity.dto;
 
+import java.io.Serializable;
+
 import org.apache.http.client.CookieStore;
 
-public class HttpResponseDTO {
+public class HttpResponseDTO implements Serializable, java.lang.Cloneable {
+	private static final long serialVersionUID = -2122525587263613649L;
 
 	private String response;
 

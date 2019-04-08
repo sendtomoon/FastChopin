@@ -1,6 +1,6 @@
 package com.sendtomoon.chopin.beans;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.DisposableBean;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
@@ -32,8 +31,7 @@ public class MongoDBFactoryBean implements FactoryBean<MongoTemplate>, Disposabl
 	private String password;
 
 	public void afterPropertiesSet() throws Exception {
-		// TODO Auto-generated method stub
-
+		getObject();
 	}
 
 	public void destroy() throws Exception {
@@ -45,8 +43,7 @@ public class MongoDBFactoryBean implements FactoryBean<MongoTemplate>, Disposabl
 
 	public MongoTemplate getObject() throws Exception {
 		if (null == template) {
-			client = new MongoClient(new ServerAddress(servers, port), this.getCredential(),
-					this.getMongoClientOptions());
+			client = new MongoClient(this.getAddress(), this.getCredential());
 			this.template = new MongoTemplate(client, dbname);
 		}
 		return template;
@@ -62,18 +59,19 @@ public class MongoDBFactoryBean implements FactoryBean<MongoTemplate>, Disposabl
 		return false;
 	}
 
-	private List<String> getAddress() {
+	private List<ServerAddress> getAddress() {
+		List<ServerAddress> list = new ArrayList<ServerAddress>();
 		String[] arr = servers.split(",");
-		return Arrays.asList(arr);
+		for (String str : arr) {
+			list.add(new ServerAddress(str.split(":")[0], Integer.valueOf(str.split(":")[1])));
+		}
+		return list;
 	}
 
-	private MongoCredential getCredential() {
-		return MongoCredential.createCredential(user, dbname, password.toCharArray());
-	}
-
-	private MongoClientOptions getMongoClientOptions() {
-		MongoClientOptions options = MongoClientOptions.builder().build();
-		return options;
+	private List<MongoCredential> getCredential() {
+		List<MongoCredential> list = new ArrayList<MongoCredential>();
+		list.add(MongoCredential.createCredential(user, dbname, password.toCharArray()));
+		return list;
 	}
 
 }
