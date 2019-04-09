@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
@@ -36,21 +37,21 @@ public class MongoDBFactoryBean implements FactoryBean<MongoTemplate>, Disposabl
 
 	public void destroy() throws Exception {
 		if (client != null) {
-			client.close();
 			client = null;
 		}
 	}
 
 	public MongoTemplate getObject() throws Exception {
 		if (null == template) {
-			client = new MongoClient(this.getAddress(), this.getCredential());
+			client = new MongoClient(this.getAddress(), this.getCredential(),
+					MongoClientOptions.builder().sslEnabled(false).build());
 			this.template = new MongoTemplate(client, dbname);
 		}
 		return template;
 	}
 
 	public Class<?> getObjectType() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -68,10 +69,8 @@ public class MongoDBFactoryBean implements FactoryBean<MongoTemplate>, Disposabl
 		return list;
 	}
 
-	private List<MongoCredential> getCredential() {
-		List<MongoCredential> list = new ArrayList<MongoCredential>();
-		list.add(MongoCredential.createCredential(user, dbname, password.toCharArray()));
-		return list;
+	private MongoCredential getCredential() {
+		return MongoCredential.createCredential(user, dbname, password.toCharArray());
 	}
 
 }
