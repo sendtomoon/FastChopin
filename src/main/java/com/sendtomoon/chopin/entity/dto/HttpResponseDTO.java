@@ -1,8 +1,13 @@
 package com.sendtomoon.chopin.entity.dto;
 
-import org.apache.http.client.CookieStore;
+import java.io.Serializable;
 
-public class HttpResponseDTO {
+import org.apache.http.client.CookieStore;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
+public class HttpResponseDTO implements Serializable, java.lang.Cloneable {
+	private static final long serialVersionUID = -2122525587263613649L;
 
 	private String response;
 

@@ -11,12 +11,12 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSONObject;
+import com.sendtomoon.chopin.data.mongodb.MongoDAO;
 import com.sendtomoon.chopin.entity.dto.HttpResponseDTO;
-import com.sendtomoon.chopin.entity.dto.RouterLoginDTO;
 import com.sendtomoon.chopin.tools.HttpUtils;
 
 @Component
@@ -33,6 +33,12 @@ public class GetIP {
 	@Value("${router.password}")
 	private String password;
 
+	@Value("${router.login.param}")
+	private String param;
+
+	@Autowired
+	private MongoDAO dao;
+
 	private String IP_FIELD = "wan0_ipaddr";
 
 	private final Logger logger = LogManager.getLogger(this.getClass());
@@ -46,24 +52,21 @@ public class GetIP {
 		CookieStore cookie = new BasicCookieStore();
 		HttpResponseDTO resultLogin = null;
 		HttpResponseDTO resultStatus = null;
-		RouterLoginDTO loginDTO = new RouterLoginDTO();
-		loginDTO.setAction_wait("5");
-		loginDTO.setCurrent_page("Main_Login.asp");
-		loginDTO.setNext_page("index.asp");
-		loginDTO.setLogin_authorization(Base64.encodeBase64String(password.getBytes()));
 		try {
-			resultLogin = HttpUtils.post(ROUTER_LOGIN_URL, JSONObject.toJSONString(loginDTO), null, this.getHeader(),
-					cookie);
+			resultLogin = HttpUtils.post(ROUTER_LOGIN_URL, param + Base64.encodeBase64String(password.getBytes()), null,
+					this.getHeader(), cookie);
 			cookie = resultLogin.getCookie();
 			resultStatus = HttpUtils.post(ROUTER_STATUS_URL, null, null, this.getHeader(), cookie);
+			Document doc = Jsoup.parse(resultStatus.getResponse());
+			Elements eles = doc.getElementsContainingOwnText(IP_FIELD);
+			ipAddr = eles.text().split("=")[1];
+			dao.add(resultStatus);
 		} catch (Exception e) {
 			logger.error("mainService-error:" + e, e);
 			return;
 		}
-		Document doc = Jsoup.parse(resultStatus.getResponse());
-		Elements eles = doc.getElementsContainingOwnText(IP_FIELD);
-		ipAddr = eles.text().split("=")[1];
 		logger.info("IP Address is:" + ipAddr);
+
 	}
 
 	private Map<String, String> getHeader() {
