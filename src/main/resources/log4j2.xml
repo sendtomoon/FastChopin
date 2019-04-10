@@ -34,7 +34,6 @@
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="chopinInfoLog" />
 			<AppenderRef ref="chopinErrorLog" />
-			<AppenderRef ref="mongoDB" />
 		</Root>
 	</Loggers>
 
