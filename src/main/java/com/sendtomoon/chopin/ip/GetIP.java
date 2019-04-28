@@ -44,7 +44,9 @@ public class GetIP {
 	private final Logger logger = LogManager.getLogger(this.getClass());
 
 	public String ip() {
+		logger.info("getIP starting-------");
 		this.mainService();
+		logger.info("getIP end------------");
 		return ipAddr;
 	}
 
